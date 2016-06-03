@@ -1,0 +1,35 @@
+<koe-bot-ui-simple>
+
+    <p>convID is {convID}</p>
+
+
+
+    <style scoped>
+        :scope {
+            display: block
+        }
+        p {
+            background-color: red;
+        }
+    </style>
+
+    <script>
+
+        this.mixin(koeUIcore);
+
+        // vars
+        //this.token = opts.token;
+        this.convID = '';
+
+        // bind
+        this.on('mount', function () {
+            this.makeConvID( opts.token )
+
+        })
+
+
+
+    </script>
+
+
+</koe-bot-ui-simple>
