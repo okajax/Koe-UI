@@ -147,8 +147,6 @@ var koeUIcore = {
         // fetch開始だぽっぽ
         fetch(myRequest);
 
-    },
-
-
+    }
 
 };

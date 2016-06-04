@@ -15,7 +15,7 @@
 
 
     <div>
-        <form onsubmit="{ send }">
+        <form onsubmit="{ send_and_polling }">
             <input type="text" onkeyup="{ edit }">
             <button disabled="{ !text }">
                 <i class="material-icons">send</i>
@@ -100,6 +100,8 @@
         // vars of view
         this.text = '';
         this.flag_firstMsgGet = false;
+        this.c_polling = 0;
+        this.polling_max = 5;
 
         // function
         edit(e) {
@@ -109,11 +111,60 @@
             // メッセージの取得
             this.getMessage(this.convID);
         }
-        send() {
-            // メッセージの送信
-            this.send_and_polling(this.convID, this.text, this.from);
-            this.root.querySelectorAll('input')[0].value = '';
+        get_prms() {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                // メッセージの取得
+                that.getMessage(that.convID);
+                resolve();
+            });
         }
+        send() {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                // メッセージの送信
+                that.sendMessage(that.convID, that.text, that.from);
+                that.root.querySelectorAll('input')[0].value = '';
+                resolve();
+            });
+        }
+        send_and_polling() {
+
+            var that = this;
+
+            // メッセージの送信
+            var d_send = this.send();
+            d_send.then(function () {
+                // ここでポーリング呼出
+                that.polling();
+            });
+        }
+        polling() {
+            var that = this;
+            return new Promise(function (resolve, reject) {
+                Promise.all([that.get_prms(), that.sleep(1500)])
+                    .then(function () {
+                        if (that.c_polling < that.polling_max) {
+                            that.c_polling++; //カウンタ更新
+                            that.polling(); //再帰呼出し
+                        }
+                    });
+                resolve();
+            });
+        }
+        sleep(time) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve();
+                }, time);
+            });
+        }
+//        dammy() {
+//            return new Promise(function (resolve, reject) {
+//                console.log('dammy GET');
+//                resolve();
+//            });
+//        }
 
         // bind
         this.on('update', function () {
