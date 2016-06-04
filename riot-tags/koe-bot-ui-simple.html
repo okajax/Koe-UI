@@ -26,8 +26,8 @@
         this.on('update', function () {
 
             // 初回のメッセージ取得
-            if( this.convID && this.isReady == false ){
-                window.alert("一回しか表示されません！");
+            if( this.convID && this.flag_firstMsgGet == false ){
+                window.alert("このアラートは一回しか表示されません！");
 
                 // flagオン
                 this.flag_firstMsgGet = true;
