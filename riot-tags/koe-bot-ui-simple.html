@@ -1,43 +1,80 @@
 <koe-bot-ui-simple>
 
-    <p>convID is {convID}</p>
+    <!--***********************************************************-->
+
+    <p>convID is { convID }</p>
+
+    <ul>
+        <li each="{ msgObj.messages }">
+            {text}
+        </li>
+    </ul>
 
 
+    <div>
+        <form onsubmit="{ send }">
+            <input type="text" onkeyup="{ edit }">
+            <button disabled="{ !text }">メッセージの送信</button>
+        </form>
+    </div>
+    <div>
+        <button onclick="{ get }">メッセージの取得</button>
+    </div>
+
+
+    <!--***********************************************************-->
 
     <style scoped>
         :scope {
             display: block
         }
+
         p {
             background-color: red;
         }
     </style>
 
-    <script>
+    <!--***********************************************************-->
 
+    <script>
         // mixin
         this.mixin(koeUIcore);
 
         // vars
+        this.text = '';
         this.flag_firstMsgGet = false;
-        this.msgObj = null;
+        //this.msgObj = {};
+
+        // function
+        edit(e) {
+            this.text = e.target.value;
+        }
+
+        get() {
+            // メッセージの取得
+            this.getMessage(this.convID);
+        }
+        send() {
+            // メッセージの送信
+            this.sendMessage( this.convID, this.text );
+        }
 
         // bind
         this.on('update', function () {
 
             // 初回のメッセージ取得
-            if( this.convID && this.flag_firstMsgGet == false ){
-                window.alert("このアラートは一回しか表示されません！");
+            if (this.convID && this.flag_firstMsgGet == false) {
 
+                console.log("初回メッセージ取得");
+                // メッセージの取得
+                this.getMessage(this.convID);
                 // flagオン
                 this.flag_firstMsgGet = true;
             }
 
         });
-
-
-
     </script>
 
+    <!--***********************************************************-->
 
 </koe-bot-ui-simple>
