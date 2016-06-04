@@ -9,7 +9,8 @@ var koeUIcore = {
     // ***********************************************************
     convID: null, // カンバセーションID: DirectLineAPIが、会話を記録するためのID。30分で無効になる
     watermark: null, // ウォーターマーク: この指定をすると、新しい発言だけ取得できる
-    //msgObj: null, // メッセージを格納するオブジェクト
+    msgObj: {}, // メッセージを格納するオブジェクト
+    from: null, // ウォーターフォールの会話を正しく動作させるためには、送信するmessageにfromを指定します
 
     // ***********************************************************
     // カンバセーションIDの判定・作成をします
@@ -25,13 +26,13 @@ var koeUIcore = {
 
             // はーい。ない人はこちらへどうぞ〜
 
-            // ヘッダーを指定
-            var myHeaders = new Headers();
-            myHeaders.append('Authorization', 'Botconnector ' + this.opts.token);
             // オプションを指定
             var myInit = {
                 method: 'POST',
-                headers: myHeaders,
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': 'Botconnector ' + this.opts.token
+                },
                 contentType: 'application/json'
             };
             // リクエストを指定
@@ -53,6 +54,7 @@ var koeUIcore = {
 
                     // カンバセーションIDをriotにわたして、update
                     that.convID = response.conversationId;
+                    that.from = 'user_'+that.convID; // from用の文字列も作成
                     that.update();
                 });
 
@@ -61,16 +63,17 @@ var koeUIcore = {
             // え、あるの？ある？　あるんだ...
             // じゃあ既存のものをriotにわたして、update
             that.convID = cookie_ConvID;
-            //that.update();
+            that.from = 'user_'+that.convID; // from用の文字列も作成
+            that.update();
 
         }
     },
     getMessage: function (convID, watermark) {
 
-        console.log('getMessage');
+        console.log('KoeUIcore.js: getMessage');
 
         if (convID == undefined) {
-            console.log('カンバセーションIDがありません');
+            console.log('KoeUIcore.js: カンバセーションIDがありません');
             return false;
         }
 
@@ -86,13 +89,13 @@ var koeUIcore = {
             get_url = 'https://directline.botframework.com/api/conversations/' + convID + '/messages';
         }
 
-        // ヘッダーを指定
-        var myHeaders = new Headers();
-        myHeaders.append('Authorization', 'Botconnector ' + this.opts.token);
         // オプションを指定
         var myInit = {
             method: 'GET',
-            headers: myHeaders,
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': 'Botconnector ' + this.opts.token
+            },
             contentType: 'application/json'
         };
         // リクエストを指定
@@ -111,7 +114,7 @@ var koeUIcore = {
                 // 取得した会話を格納
                 that.msgObj = response;
 
-                 that.update();
+                that.update();
 
                 console.log(response);
                 //return response.messages;
@@ -122,7 +125,7 @@ var koeUIcore = {
     sendMessage: function (convID, text, from) {
 
         console.log(text);
-        console.log('sendMessage');
+        console.log('KoeUIcore.js: sendMessage');
 
         var send_url = 'https://directline.botframework.com/api/conversations/' + convID + '/messages';
 
@@ -134,7 +137,8 @@ var koeUIcore = {
                 'Authorization': 'Botconnector ' + this.opts.token
             },
             body: JSON.stringify({
-                'text': text
+                'text': text,
+                'from': from
             })
         };
         // リクエストを指定
@@ -143,7 +147,8 @@ var koeUIcore = {
         // fetch開始だぽっぽ
         fetch(myRequest);
 
-    }
+    },
+
 
 
 };

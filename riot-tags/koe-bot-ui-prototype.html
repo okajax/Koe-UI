@@ -1,4 +1,4 @@
-<koe-bot-ui-simple>
+<koe-bot-ui-prototype>
 
     <!--***********************************************************-->
 
@@ -28,9 +28,8 @@
         :scope {
             display: block
         }
-
         p {
-            background-color: red;
+            background-color: #d8d8d8;
         }
     </style>
 
@@ -40,41 +39,37 @@
         // mixin
         this.mixin(koeUIcore);
 
-        // vars
+        // vars of view
         this.text = '';
         this.flag_firstMsgGet = false;
-        //this.msgObj = {};
 
         // function
         edit(e) {
             this.text = e.target.value;
         }
-
         get() {
             // メッセージの取得
             this.getMessage(this.convID);
         }
         send() {
             // メッセージの送信
-            this.sendMessage( this.convID, this.text );
+            this.sendMessage( this.convID, this.text, this.from );
+            this.root.querySelectorAll('input')[0].value = '';
         }
 
         // bind
         this.on('update', function () {
-
             // 初回のメッセージ取得
             if (this.convID && this.flag_firstMsgGet == false) {
 
-                console.log("初回メッセージ取得");
                 // メッセージの取得
                 this.getMessage(this.convID);
                 // flagオン
                 this.flag_firstMsgGet = true;
             }
-
         });
     </script>
 
     <!--***********************************************************-->
 
-</koe-bot-ui-simple>
+</koe-bot-ui-prototype>

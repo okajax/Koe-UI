@@ -1,0 +1,133 @@
+<koe-bot-ui-basicchat>
+
+    <!--***********************************************************-->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <ul>
+        <li>
+            <span>Hi, I am a bot! How are you?</span>
+        </li>
+        <li each="{ msgObj.messages }">
+            <span>{ text }</span>
+        </li>
+    </ul>
+
+
+    <div>
+        <form onsubmit="{ send }">
+            <input type="text" onkeyup="{ edit }">
+            <button disabled="{ !text }">
+                <i class="material-icons">send</i>
+            </button>
+        </form>
+    </div>
+
+
+    <!--***********************************************************-->
+
+    <style scoped>
+        :scope {
+            display: block;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        ul {
+            display: block;
+            padding: 0;
+            height: 200px;
+            overflow: auto;
+        }
+
+        li {
+            display: block;
+            list-style: none;
+        }
+
+        li span {
+            display: inline-block;
+            background: #F1F0F0;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        form {
+            display: block;
+            position: relative;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            border: 2px solid #d9d9d9;
+            border-radius: 7px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        input:active,
+        input:focus {
+            outline: none;
+            border: 2px solid #afafaf;
+        }
+
+        button {
+            display: block;
+            position: absolute;
+            right: 7px;
+            top: 5px;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: #848484;
+        }
+
+        button[disabled="disabled"] {
+            opacity: 0.3;
+        }
+    </style>
+
+    <!--***********************************************************-->
+
+    <script>
+        // mixin
+        this.mixin(koeUIcore);
+
+        // vars of view
+        this.text = '';
+        this.flag_firstMsgGet = false;
+
+        // function
+        edit(e) {
+            this.text = e.target.value;
+        }
+        get() {
+            // メッセージの取得
+            this.getMessage(this.convID);
+        }
+        send() {
+            // メッセージの送信
+            this.send_and_polling(this.convID, this.text, this.from);
+            this.root.querySelectorAll('input')[0].value = '';
+        }
+
+        // bind
+        this.on('update', function () {
+            // 初回のメッセージ取得
+            if (this.convID && this.flag_firstMsgGet == false) {
+
+                // メッセージの取得
+                this.getMessage(this.convID);
+                // flagオン
+                this.flag_firstMsgGet = true;
+            }
+        });
+    </script>
+
+    <!--***********************************************************-->
+
+</koe-bot-ui-basicchat>
