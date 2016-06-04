@@ -3,15 +3,23 @@ var koeUIcore = {
     // js-cookie依存
 
     // ***********************************************************
-    // カンバセーションIDを作成します
+    // 変数
+    // ***********************************************************
+    convID: null,
+    init_d: null,
+    //token: this.opts.token,
+
+
+    // ***********************************************************
+    // カンバセーションIDの判定・作成をします
     // ***********************************************************
 
-    makeConvID: function (token) {
+    init: function () {
 
-        var riot_self = this;
+        var token = this.opts.token;
+
+        var that = this;
         var cookie_ConvID = Cookies.get('convID');
-
-        console.log(cookie_ConvID);
 
         // クッキーにカンバセーションIDがすでにあるか調べる
         if (cookie_ConvID == undefined) {
@@ -33,7 +41,7 @@ var koeUIcore = {
             var myRequest = new Request('https://directline.botframework.com/api/conversations', myInit);
 
             // fetch開始だぽっぽ
-            fetch(myRequest)
+            that.init_d = fetch(myRequest)
                 .then(function (data) {
                     return data.json() // 紛らわしいからJSONにするぽっぽ
                 })
@@ -47,16 +55,16 @@ var koeUIcore = {
                     });
 
                     // カンバセーションIDをriotにわたして、update
-                    riot_self.convID = response.conversationId;
-                    riot_self.update();
+                    that.convID = response.conversationId;
+                    that.update();
                 });
 
         } else {
 
             // え、あるの？ある？　あるんだ...
             // じゃあ既存のものをriotにわたして、update
-            riot_self.convID = cookie_ConvID;
-            riot_self.update();
+            that.convID = cookie_ConvID;
+            //that.update();
 
         }
     }

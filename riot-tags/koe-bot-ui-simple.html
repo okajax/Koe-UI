@@ -15,17 +15,25 @@
 
     <script>
 
+        // mixin
         this.mixin(koeUIcore);
 
         // vars
-        //this.token = opts.token;
-        this.convID = '';
+        this.flag_firstMsgGet = false;
+        this.msgObj = null;
 
         // bind
-        this.on('mount', function () {
-            this.makeConvID( opts.token )
+        this.on('update', function () {
 
-        })
+            // 初回のメッセージ取得
+            if( this.convID && this.isReady == false ){
+                window.alert("一回しか表示されません！");
+
+                // flagオン
+                this.flag_firstMsgGet = true;
+            }
+
+        });
 
 
 
