@@ -1,18 +1,23 @@
-<koe-bot-ui-basicchat>
+<koe-ui-basicchat>
 
     <!--***********************************************************-->
 
+    <!-- Google Material Icon -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <ul>
-        <li>
-            <span>Hi, I am a bot! How are you?</span>
-        </li>
-        <li each="{ msgObj.messages }">
-            <span>{ text }</span>
-        </li>
-    </ul>
+    <div class="messagesBox">
 
+        <div class="message _welcome">
+            <span>Hi, I am a bot! How are you?</span>
+        </div>
+
+        <div each="{ msgObj.messages }">
+            <div class="message {filter_me( from )}">
+                <span>{ text }</span>
+            </div>
+        </div>
+
+    </div>
 
     <div>
         <form onsubmit="{ send_and_polling }">
@@ -29,36 +34,41 @@
     <style scoped>
         :scope {
             display: block;
+            border: 2px solid #d9d9d9;
+            border-radius: 7px;
+            padding: 10px;
+            box-sizing: border-box;
         }
-
         * {
             box-sizing: border-box;
         }
-
-        ul {
+        .messagesBox {
             display: block;
-            padding: 0;
+            padding: 10px;
             height: 200px;
+            margin-bottom: 10px;
             overflow: auto;
         }
-
-        li {
-            display: block;
-            list-style: none;
+        .message {
+            margin: 10px;
         }
-
-        li span {
+        .message > span {
             display: inline-block;
             background: #F1F0F0;
             padding: 5px 15px;
             border-radius: 20px;
         }
-
+        .message._me {
+            text-align: right;
+        }
+        .message._me > span {
+            color: #fff;
+            background: #41e667;
+        }
         form {
             display: block;
             position: relative;
         }
-
         input {
             display: block;
             width: 100%;
@@ -67,13 +77,11 @@
             padding: 8px;
             font-size: 16px;
         }
-
         input:active,
         input:focus {
             outline: none;
             border: 2px solid #afafaf;
         }
-
         button {
             display: block;
             position: absolute;
@@ -85,7 +93,6 @@
             cursor: pointer;
             color: #848484;
         }
-
         button[disabled="disabled"] {
             opacity: 0.3;
         }
@@ -97,20 +104,18 @@
         // mixin
         this.mixin(koeUIcore);
 
-        // vars of view
+        // vars of View
         this.text = '';
         this.flag_firstMsgGet = false;
         this.c_polling = 0;
-        this.polling_max = 5;
+        this.polling_max = 30;
+        this.msgAmount = 0;
 
         // function
         edit(e) {
             this.text = e.target.value;
         }
-        get() {
-            // メッセージの取得
-            this.getMessage(this.convID);
-        }
+        // getのPromise版
         get_prms() {
             var that = this;
             return new Promise(function (resolve, reject) {
@@ -142,12 +147,27 @@
         polling() {
             var that = this;
             return new Promise(function (resolve, reject) {
-                Promise.all([that.get_prms(), that.sleep(1500)])
+                Promise.all([that.get_prms(), that.sleep(300)])
                     .then(function () {
+
+                        // 再帰処理
+                        // カウンタが最大より、まだ小さい。and 新しいメッセージが取得されていない場合
                         if (that.c_polling < that.polling_max) {
                             that.c_polling++; //カウンタ更新
                             that.polling(); //再帰呼出し
+                        } else {
+                            console
+                            that.c_polling = 0;
+                            that.scrollToBottom();
                         }
+
+                        // メッセージ数のチェック
+                        if( that.msgAmount < that.msgObj.messages.length ){
+                            that.scrollToBottom();
+                        }
+                        that.msgAmount = that.msgObj.messages.length;
+
+
                     });
                 resolve();
             });
@@ -159,26 +179,33 @@
                 }, time);
             });
         }
-//        dammy() {
-//            return new Promise(function (resolve, reject) {
-//                console.log('dammy GET');
-//                resolve();
-//            });
-//        }
+        filter_me(user) {
+            if (user == this.from) {
+                return "_me";
+            }
+        }
+        scrollToBottom(){
+            $(".messagesBox").animate({scrollTop: $(".messagesBox")[0].scrollHeight});
+        }
 
-        // bind
+        // update
         this.on('update', function () {
-            // 初回のメッセージ取得
+
+            // 初回呼出の処理
             if (this.convID && this.flag_firstMsgGet == false) {
 
                 // メッセージの取得
-                this.getMessage(this.convID);
+                this.getMessage( this.convID, null, this.scrollToBottom );
+
                 // flagオン
                 this.flag_firstMsgGet = true;
+
             }
+
         });
+
     </script>
 
     <!--***********************************************************-->
 
-</koe-bot-ui-basicchat>
+</koe-ui-basicchat>

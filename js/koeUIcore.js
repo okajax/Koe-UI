@@ -68,7 +68,7 @@ var koeUIcore = {
 
         }
     },
-    getMessage: function (convID, watermark) {
+    getMessage: function (convID, watermark, callbackAction) {
 
         console.log('KoeUIcore.js: getMessage');
 
@@ -101,10 +101,10 @@ var koeUIcore = {
         // リクエストを指定
         var myRequest = new Request(get_url, myInit);
 
-        // fetch開始だぽっぽ
+        // fetch開始
         fetch(myRequest)
             .then(function (data) {
-                return data.json() // 紛らわしいからJSONにするぽっぽ
+                return data.json() // JSONにする
             })
             .then(function (response) {
 
@@ -114,13 +114,14 @@ var koeUIcore = {
                 // 取得した会話を格納
                 that.msgObj = response;
 
+                // Viewをアップデート
                 that.update();
 
-                console.log(response);
-                //return response.messages;
+                if(callbackAction){
+                    callbackAction();
+                }
 
             });
-
     },
     sendMessage: function (convID, text, from) {
 
