@@ -5,7 +5,7 @@
     <!-- Google Material Icon -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <div class="messagesBox">
+    <div class="chatScreen">
 
         <div class="message _welcome">
             <span>Hi, I am a bot! How are you?</span>
@@ -42,7 +42,7 @@
         * {
             box-sizing: border-box;
         }
-        .messagesBox {
+        .chatScreen {
             display: block;
             padding: 10px;
             height: 200px;
@@ -111,39 +111,48 @@
         this.polling_max = 30;
         this.msgAmount = 0;
 
-        // function
+        // フィールド編集時、テキストを取得する (値があれば、Viewの送信ボタンのdisabledがfalseになる)
         edit(e) {
             this.text = e.target.value;
         }
-        // getのPromise版
+
+        // メッセージ受信
         get_prms() {
             var that = this;
             return new Promise(function (resolve, reject) {
-                // メッセージの取得
+                // conversationIdをもとに、メッセージの取得
                 that.getMessage(that.convID);
                 resolve();
             });
         }
+
+        // メッセージ送信
         send() {
             var that = this;
             return new Promise(function (resolve, reject) {
-                // メッセージの送信
+                // フィールドに入力されたテキストで、メッセージ送信
                 that.sendMessage(that.convID, that.text, that.from);
                 that.root.querySelectorAll('input')[0].value = '';
                 resolve();
             });
         }
+
+        // 送信とポーリングの開始
         send_and_polling() {
 
             var that = this;
 
             // メッセージの送信
             var d_send = this.send();
+
+            // メッセージ送信が終わったら
             d_send.then(function () {
                 // ここでポーリング呼出
                 that.polling();
             });
         }
+
+        // ポーリング
         polling() {
             var that = this;
             return new Promise(function (resolve, reject) {
@@ -172,6 +181,8 @@
                 resolve();
             });
         }
+
+        // スリープ
         sleep(time) {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
@@ -179,19 +190,23 @@
                 }, time);
             });
         }
+
+        // 自分の発言か否か判定するフィルター
         filter_me(user) {
             if (user == this.from) {
-                return "_me";
+                return "_me"; // 真ならば、"_me"を返す。(CSSとリンクしている)
             }
         }
+
+        // .chatScreen を下までスクロールさせる
         scrollToBottom(){
-            $(".messagesBox").animate({scrollTop: $(".messagesBox")[0].scrollHeight});
+            $(".chatScreen").animate({scrollTop: $(".messagesBox")[0].scrollHeight});
         }
 
-        // update
+        // Viewのアップデート時に行う処理
         this.on('update', function () {
 
-            // 初回呼出の処理
+            // 初回呼出時のみ処理
             if (this.convID && this.flag_firstMsgGet == false) {
 
                 // メッセージの取得
