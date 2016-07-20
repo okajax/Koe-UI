@@ -28,3 +28,24 @@ This is for bots made with MicrodoftBotFramework.
 * iOS Safari: >= 8
 * Opera: >= 20
 * Safari: >= 7.1
+
+
+##Usage
+
+Read script files.
+
+```
+<script src="https://rawgit.com/riot/riot/master/riot%2Bcompiler.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.2/js.cookie.min.js"></script>
+<script src="./js/koeUIcore.js"></script>
+<script src="./riot-tags/koe-ui-basicchat.html" type="riot/tag"></script>
+<script>riot.mount('*');</script>
+```
+
+
+Then, put the custom tag on the place where you like.
+
+```
+<koe-ui-basicchat token="YOUR DIRECT LINE API SECRET KEY"></koe-ui-basicchat>
+```
