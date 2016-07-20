@@ -5,6 +5,12 @@ This component offers your website an interface that we can talk with bot.
 
 This is for bots made with MicrodoftBotFramework.
 
+##Live Demo
+
+https://okajax.github.io/Koe-UI/basicchat.html
+
+(Japanese language bot)
+
 
 ##Dependencies
 
