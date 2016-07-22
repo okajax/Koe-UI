@@ -2,8 +2,6 @@ var cookies = require('browser-cookies');
 
 var koeUIcore = {
 
-    // * js-cookie依存
-
     // UIのタイプの如何に関わらず、共通する機能をここに格納する
 
     // ***********************************************************
