@@ -34,7 +34,7 @@ Read script files.
 Then, put the custom tag on the place where you like.
 
 ```html
-<koe-ui-basicchat token="_YOUR_DIRECT_LINE_API_SECRET_KEY"></koe-ui-basicchat>
+<koe-ui-basic token="_YOUR_DIRECT_LINE_API_SECRET_KEY"></koe-ui-basic>
 ```
 
 ##ToDo
