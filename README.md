@@ -24,7 +24,7 @@ https://okajax.github.io/Koe-UI/basicchat.html
 
 ##Usage
 
-Read script files.
+Include script files.
 
 ```html
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
