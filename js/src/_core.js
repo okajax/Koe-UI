@@ -1,3 +1,5 @@
+var cookies = require('browser-cookies');
+
 var koeUIcore = {
 
     // * js-cookie依存
@@ -19,7 +21,7 @@ var koeUIcore = {
     init: function () {
 
         var that = this; // thatはRiotのカスタムタグを指す
-        var cookie_ConvID = Cookies.get('convID');
+        var cookie_ConvID = cookies.get('convID');
 
         // クッキーにカンバセーションIDがすでにあるか調べる
         if (cookie_ConvID == undefined) {
@@ -48,7 +50,7 @@ var koeUIcore = {
                     // 30分が期限のクッキーを発行、カンバセーションIDを記憶しておく
                     var date = new Date();
                     date.setTime(date.getTime() + (30 * 60 * 1000));
-                    Cookies.set("convID", response.conversationId, {
+                    cookies.set("convID", response.conversationId, {
                         expires: date
                     });
 
@@ -151,3 +153,5 @@ var koeUIcore = {
     }
 
 };
+
+module.exports = koeUIcore;

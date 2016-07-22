@@ -1,4 +1,4 @@
-<koe-ui-basicchat>
+<koe-ui-basic>
 
     <!--***********************************************************-->
 
@@ -158,7 +158,7 @@
 
     <script>
         // mixin
-        var koeUIcore = require('../koe-ui-core.js');
+        var koeUIcore = require('../_core.js');
         this.mixin(koeUIcore);
 
         // vars of View
@@ -281,4 +281,4 @@
 
     <!--***********************************************************-->
 
-</koe-ui-basicchat>
+</koe-ui-basic>
