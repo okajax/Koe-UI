@@ -40,4 +40,4 @@ Then, put the custom tag on the place where you like.
 ##ToDo
 
 - [x] use browserify, and make simple
-- [ ] make loading animetion
+- [x] make loading animation
