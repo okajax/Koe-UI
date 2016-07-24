@@ -21,10 +21,15 @@
 
     <div>
         <form onsubmit="{ send_and_polling }">
+
             <input type="text" onkeyup="{ edit }">
+
+            <div class='loader'>loading</div>
+
             <button disabled="{ !text }">
                 <i class="material-icons">send</i>
             </button>
+
         </form>
     </div>
 
@@ -103,34 +108,37 @@
             cursor: pointer;
             color: #848484;
         }
-
         button[disabled="disabled"] {
             opacity: 0.3;
         }
 
+        /* CSS spiner */
+        /* Based on http://projects.lukehaas.me/css-loaders/ */
         .loader {
-            margin: 60px auto;
+            display: none;
+            margin: 0;
             font-size: 10px;
-            position: relative;
+            position: absolute;
+            right: 44px;
+            bottom: 8px;
+            z-index: 3;
             text-indent: -9999em;
-            border-top: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-right: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
-            border-left: 1.1em solid #ffffff;
+            border-top: 3px solid rgba(195, 195, 195, 0.2);
+            border-right: 3px solid rgba(195, 195, 195, 0.2);
+            border-bottom: 3px solid rgba(195, 195, 195, 0.2);
+            border-left: 3px solid #41e667;
             -webkit-transform: translateZ(0);
             -ms-transform: translateZ(0);
             transform: translateZ(0);
-            -webkit-animation: load8 1.1s infinite linear;
-            animation: load8 1.1s infinite linear;
+            -webkit-animation: load8 0.6s infinite linear;
+            animation: load8 0.6s infinite linear;
         }
-
         .loader,
         .loader:after {
             border-radius: 50%;
-            width: 10em;
-            height: 10em;
+            width: 23px;
+            height: 23px;
         }
-
         @-webkit-keyframes load8 {
             0% {
                 -webkit-transform: rotate(0deg);
@@ -141,7 +149,6 @@
                 transform: rotate(360deg);
             }
         }
-
         @keyframes load8 {
             0% {
                 -webkit-transform: rotate(0deg);
@@ -167,6 +174,8 @@
         this.c_polling = 0;
         this.polling_max = 30;
         this.msgAmount = 0;
+        this.latestMsg = {};
+        this.lastestBotMsgId = '';
 
         // フィールド編集時、テキストを取得する (値があれば、Viewの送信ボタンのdisabledがfalseになる)
         edit(e) {
@@ -205,6 +214,7 @@
             // メッセージ送信が終わったら
             d_send.then(function () {
                 // ここでポーリング呼出
+                $(".loader").fadeIn(200);
                 that.polling();
             });
         }
@@ -217,20 +227,50 @@
                     .then(function () {
 
                         // 再帰処理
-                        // カウンタが最大より、まだ小さい。and 新しいメッセージが取得されていない場合
-                        if (that.c_polling < that.polling_max) {
+                        // カウンタが最大より、まだ小さい。or Botからの新しいメッセージが取得されていない場合
+
+                        if (that.c_polling < that.polling_max && that.lastestBotMsgId != that.latestMsg.id) {
                             that.c_polling++; //カウンタ更新
                             that.polling(); //再帰呼出し
                         } else {
-                            console
+                            $(".loader").fadeOut(200);
                             that.c_polling = 0;
                             that.scrollToBottom();
+
+                            that.lastestBotMsgId = '';
+
+                            console.log('■ポーリングをやめたとき');
+                            console.log(that.lastestBotMsgId, that.latestMsg.id);
+                            console.log('LatestBotMsgId: '+that.lastestBotMsgId);
+                            console.log(that.latestMsg);
+
                         }
 
                         // メッセージ数のチェック
                         if (that.msgAmount < that.msgObj.messages.length) {
+
+                            // 新しいものがあれば、下までスクロール
                             that.scrollToBottom();
+
+                            // 最新のMsgを取得
+                            that.getLatestMsg();
+
+                            // 最新のBotメッセージIdを記録
+                            if( that.latestMsg.from != that.from){
+                                that.lastestBotMsgId = that.latestMsg.id;
+
+                                console.log('■メッセージ数が多かったとき');
+                                console.log(that.msgAmount,that.msgObj.messages.length);
+                                console.log(that.lastestBotMsgId, that.latestMsg.id);
+                                console.log('LatestBotMsgId: '+that.lastestBotMsgId);
+                                console.log(that.latestMsg);
+
+                            }
+
                         }
+
+
+                        // メッセージ総数の更新
                         that.msgAmount = that.msgObj.messages.length;
 
 
@@ -255,6 +295,15 @@
             }
         }
 
+        // 最新のMsgを取得
+        getLatestMsg() {
+            if(this.msgObj.messages.length){
+                this.latestMsg = this.msgObj.messages[this.msgObj.messages.length-1];
+            }else{
+                this.latestMsg = 'no messages';
+            }
+        }
+
         // .chatScreen を下までスクロールさせる
         scrollToBottom() {
             $(".chatScreen").animate({
@@ -268,8 +317,15 @@
             // 初回呼出時のみ処理
             if (this.convID && this.flag_firstMsgGet == false) {
 
+                var that = this;
+                var getMsgCallback = function(){
+                    that.msgAmount = that.msgObj.messages.length;
+                    that.scrollToBottom();
+                    that.getLatestMsg();
+                }
+
                 // メッセージの取得
-                this.getMessage(this.convID, null, this.scrollToBottom);
+                this.getMessage(this.convID, null, getMsgCallback);
 
                 // flagオン
                 this.flag_firstMsgGet = true;
