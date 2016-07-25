@@ -52,7 +52,7 @@
         .chatScreen {
             display: block;
             padding: 10px;
-            height: 200px;
+            height: 300px;
             margin-bottom: 10px;
             overflow: auto;
         }
