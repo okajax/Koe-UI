@@ -25,10 +25,6 @@
   "homepage": "https://github.com/okajax/Koe-UI#readme",
   "dependencies": {
     "browser-cookies": "^1.0.8",
-    "browserify": "^13.0.1",
-    "browserify-shim": "^3.8.12",
-    "gulp": "^3.9.1",
-    "gulp-plumber": "^1.1.0",
-    "vinyl-source-stream": "^1.1.0"
+    "browserify": "^13.0.1"
   }
 }
