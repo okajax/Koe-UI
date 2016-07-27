@@ -1,14 +1,16 @@
 var gulp = require('gulp');
+var plumber = require('gulp-plumber');
 var browserify = require('browserify');
-var riotify = require('riotify');
-var source = require('vinyl-source-stream');
 
-gulp.task('build-basic', function () {
-  return browserify({
-    debug: true,
-    entries: ['./js/src/basic.js']
-  }).transform([riotify])
-    .bundle()
-    .pipe(source('koe-ui-basic.js'))
-    .pipe(gulp.dest('./js/dist/'));
+
+gulp.task('build', function () {
+    gulp.src(['./js/src/_koeUIcore.js'])
+        .pipe(plumber({
+            handleError: function (err) {
+                console.log(err);
+                this.emit('end');
+            }
+        }))
+        .pipe(browserify())
+        .pipe(gulp.dest('./js/dist'))
 });

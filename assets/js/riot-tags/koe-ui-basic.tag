@@ -165,7 +165,6 @@
 
     <script>
         // mixin
-        var koeUIcore = require('../_core.js');
         this.mixin(koeUIcore);
 
         // vars of View
@@ -237,13 +236,10 @@
                             that.c_polling = 0;
                             that.scrollToBottom();
 
+                            console.log('koe-ui-basic: Polling end. LatestBotMsgId is '+ that.lastestBotMsgId);
+
+                            // 最新Botメッセージの記録用変数をリセット
                             that.lastestBotMsgId = '';
-
-                            console.log('■ポーリングをやめたとき');
-                            console.log(that.lastestBotMsgId, that.latestMsg.id);
-                            console.log('LatestBotMsgId: '+that.lastestBotMsgId);
-                            console.log(that.latestMsg);
-
                         }
 
                         // メッセージ数のチェック
@@ -255,15 +251,11 @@
                             // 最新のMsgを取得
                             that.getLatestMsg();
 
-                            // 最新のBotメッセージIdを記録
+                            // 発言がBotのものならば、最新のBotメッセージIdを記録
                             if( that.latestMsg.from != that.from){
                                 that.lastestBotMsgId = that.latestMsg.id;
 
-                                console.log('■メッセージ数が多かったとき');
-                                console.log(that.msgAmount,that.msgObj.messages.length);
-                                console.log(that.lastestBotMsgId, that.latestMsg.id);
-                                console.log('LatestBotMsgId: '+that.lastestBotMsgId);
-                                console.log(that.latestMsg);
+                                console.log('koe-ui-basic: There is a new message.');
 
                             }
 
