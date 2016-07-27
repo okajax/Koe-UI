@@ -27,14 +27,17 @@ https://okajax.github.io/Koe-UI/basicchat.html
 Include script files.
 
 ```html
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="./js/dist/koe-ui-basic.js"></script>
+    <script src="assets/js/vender/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/vender/riot+compiler.min.js"></script>
+    <script src="assets/js/koeUIcore.js"></script>
+    <script src="assets/js/riot-tags/koe-ui-basic.tag" type="riot/tag"></script>
+    <script>riot.mount('*');</script>
 ```
 
 Then, put the custom tag on the place where you like.
 
 ```html
-<koe-ui-basic token="_YOUR_DIRECT_LINE_API_SECRET_KEY"></koe-ui-basic>
+<koe-ui-basic token="_YOUR_DIRECT_LINE_API_SECRET_KEY_"></koe-ui-basic>
 ```
 
 ##ToDo
