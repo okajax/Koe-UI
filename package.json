@@ -1,29 +1,32 @@
 {
-  "name": "koe-ui",
-  "version": "0.0.1",
-  "description": "Koe-UI is an web UI component for Microsoft Bot Framework",
-  "main": "index.js",
-  "scripts": {
-    "build": "browserify src/_core.js --standalone koeUIcore > dest/koeUIcore.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/okajax/Koe-UI.git"
-  },
-  "keywords": [
+    "name": "koe-ui",
+    "version": "0.0.1",
+    "description": "Koe-UI is an web UI component for Microsoft Bot Framework",
+    "main": "index.js",
+    "scripts": {
+        "build": "browserify src/_core.js --standalone koeUIcore > dest/koeUIcore.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/okajax/Koe-UI.git"
+    },
+    "keywords": [
     "bot",
     "riot",
     "microsoft",
     "javascript",
     "web"
   ],
-  "author": "okajax",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/okajax/Koe-UI/issues"
-  },
-  "homepage": "https://github.com/okajax/Koe-UI#readme",
-  "dependencies": {
-    "browser-cookies": "^1.0.8"
-  }
+    "author": "okajax",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/okajax/Koe-UI/issues"
+    },
+    "homepage": "https://github.com/okajax/Koe-UI#readme",
+    "dependencies": {
+        "browser-cookies": "^1.0.8"
+    },
+    "devDependencies": {
+        "browserify": "^13.0.1"
+    }
 }
