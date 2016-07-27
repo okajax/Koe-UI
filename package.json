@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/okajax/Koe-UI#readme",
   "dependencies": {
-    "browser-cookies": "^1.0.8",
-    "browserify": "^13.0.1"
+    "browser-cookies": "^1.0.8"
   }
 }
