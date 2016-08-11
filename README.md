@@ -1,7 +1,8 @@
 #Koe-UI
 
 Koe-UI is **an web UI component for Microsoft Bot Framework**
-This component offers an interface that **you can talk with Bot on your website.**
+
+This component offers an interface that **you can talk with Bot on your website**
 
 This is made by Riot.js
 
