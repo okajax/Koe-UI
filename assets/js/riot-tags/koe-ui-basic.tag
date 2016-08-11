@@ -171,7 +171,7 @@
         this.text = '';
         this.flag_firstMsgGet = false;
         this.c_polling = 0;
-        this.polling_max = 30;
+        this.polling_max = 60;
         this.msgAmount = 0;
         this.latestMsg = {};
         this.lastestBotMsgId = '';
