@@ -1,4 +1,4 @@
-#Koe-UI
+![Koe UI](assets/images/catch.png)
 
 Koe-UI is **an web UI component for Microsoft Bot Framework**
 
@@ -7,6 +7,8 @@ This component offers an interface that **you can talk with Bot on your website*
 This is made by Riot.js
 
 ##Live Demo
+
+![Demo](assets/images/demo.gif)
 
 https://okajax.github.io/Koe-UI/basicchat.html
 
