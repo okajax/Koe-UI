@@ -30,11 +30,11 @@ https://okajax.github.io/Koe-UI/basicchat.html
 Include script files.
 
 ```html
-    <script src="assets/js/vender/jquery-1.12.4.min.js"></script>
-    <script src="assets/js/vender/riot+compiler.min.js"></script>
-    <script src="assets/js/koeUIcore.js"></script>
-    <script src="assets/js/riot-tags/koe-ui-basic.tag" type="riot/tag"></script>
-    <script>riot.mount('*');</script>
+<script src="assets/js/vender/jquery-1.12.4.min.js"></script>
+<script src="assets/js/vender/riot+compiler.min.js"></script>
+<script src="assets/js/koeUIcore.js"></script>
+<script src="assets/js/riot-tags/koe-ui-basic.tag" type="riot/tag"></script>
+<script>riot.mount('*');</script>
 ```
 
 Then, put the custom tag on the place where you like.
