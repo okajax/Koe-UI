@@ -8,7 +8,7 @@
     <div class="chatScreen">
 
         <div class="message _welcome">
-            <span>Hi, I am a bot! How are you?</span>
+            <span>こんにちは、Botです！何か話しかけてみてね！</span>
         </div>
 
         <div each="{ msgObj.messages }">
@@ -165,17 +165,30 @@
     <!--***********************************************************-->
 
     <script>
-        // mixin
+
+        // + + + + + + + + + + + + + + + +
+
+        // コア機能をmixin
         this.mixin(koeUIcore);
 
         // vars of View
         this.text = '';
         this.flag_firstMsgGet = false;
-        this.c_polling = 0;
-        this.polling_max = 100;
         this.msgAmount = 0;
         this.latestMsg = {};
         this.lastestBotMsgId = '';
+
+        // ポーリングの設定
+        this.c_polling = 0; // カウンター
+        this.polling_max = 100; // 最高ポーリング試行回数
+        this.polling_interval = 300; // ポーリング間隔(ミリ秒)
+
+        // タグで指定があった場合には、デフォルト設定を上書き
+        if(opts.pollingMax){ this.polling_max = parseInt(opts.pollingMax) }
+        if(opts.pollingInterval){ this.polling_interval = parseInt(opts.pollingInterval) }
+
+        // + + + + + + + + + + + + + + + +
+
 
         // フィールド編集時、テキストを取得する (値があれば、Viewの送信ボタンのdisabledがfalseになる)
         edit(e) {
@@ -223,7 +236,7 @@
         polling() {
             var that = this;
             return new Promise(function (resolve, reject) {
-                Promise.all([that.get_prms(), that.sleep(300)])
+                Promise.all([that.get_prms(), that.sleep(that.polling_interval)])
                     .then(function () {
 
                         // 再帰処理
