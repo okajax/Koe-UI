@@ -43,6 +43,19 @@ Then, put the custom tag on the place where you like.
 <koe-ui-basic token="_YOUR_DIRECT_LINE_API_SECRET_KEY_"></koe-ui-basic>
 ```
 
+###Polling setting
+
+You can adjust behavior of polling.
+
+```html
+<koe-ui-basic
+  token="_YOUR_DIRECT_LINE_API_SECRET_KEY_"
+  polling-max="120"
+  polling-interval="400"
+></koe-ui-basic>
+```
+
+
 ##ToDo
 
 - [x] use browserify, and make simple
